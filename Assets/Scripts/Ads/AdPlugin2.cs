@@ -2,23 +2,25 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class AdPlugin2 : IAdPlugin
+public class AdPlugin2 : MonoBehaviour, IAdPlugin
 {
     Plugin2InitResult initResult = Plugin2InitResult.Failed;
+    GameObject currentAdObject;
 
     public AdPlugin2()
     {
-        Initialize();
+        Init();
     }
 
 
-    private void Initialize()
+    private void Init()
     {
-        OnInitialized(Plugin2InitResult.Success);
+        OnInitCallback(Plugin2InitResult.Success);
     }
 
-    private void OnInitialized(Plugin2InitResult result)
+    private void OnInitCallback(Plugin2InitResult result)
     {
         initResult = result;
     }
@@ -34,17 +36,21 @@ public class AdPlugin2 : IAdPlugin
 
     public float GetCPM()
     {
-        throw new NotImplementedException();
+        return Random.Range(0.0f, 10.0f);
     }
 
     public void ShowAd()
     {
-        throw new NotImplementedException();
+        Debug.Log("AdPlugin2 Ads Show");
+        GameObject adObject = Resources.Load("Ads/Plugin2") as GameObject;
+        currentAdObject = Instantiate(adObject);
+        currentAdObject.hideFlags = HideFlags.HideInHierarchy;
     }
 
     public void HideAd()
     {
-        throw new NotImplementedException();
+        Debug.Log("AdPlugin2 Ads Hide");
+        Destroy(currentAdObject);
     }
 }
 
